@@ -5,9 +5,9 @@
 int main()
 {
     std::cout << "Hello World!" << std::endl;
-    s3dl::Window window(800, 600, "Hello OpenGL!");
-    s3dl::Color color(20, 20, 100, 255);
-    s3dl::Triangle trig;
+    gpgl::Window window(800, 600, "Hello OpenGL!");
+    gpgl::Color color(20, 20, 100, 255);
+    gpgl::Triangle trig;
     window.setClearColor(color);
     while (!window.shouldWindowClose())
     {

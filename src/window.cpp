@@ -4,7 +4,7 @@
 #include <ostream>
 #include <glad/glad.h>
 
-namespace s3dl
+namespace gpgl
 {
     Window::Window(const uint& width, const uint& height, std::string_view title)
     {

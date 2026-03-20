@@ -2,7 +2,7 @@
 
 #include "GLFW/glfw3.h"
 
-namespace s3dl
+namespace gpgl
 {
     Triangle::Triangle()
         : m_vertices{

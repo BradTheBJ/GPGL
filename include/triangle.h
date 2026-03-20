@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include "window.h"
 
-namespace s3dl
+namespace gpgl
 {
     class Triangle
     {
