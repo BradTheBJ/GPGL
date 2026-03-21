@@ -2,20 +2,19 @@
 
 namespace gpgl {
 Rectangle::Rectangle(const float &width, const float &height, Window &window)
-    : m_vertices{-width / (window.getWidth() / 2.0f),
-                 -height / (window.getHeight() / 2.0f),
-                 0.0f,
-                 width / (window.getWidth() / 2.0f),
-                 -height / (window.getHeight() / 2.0f),
-                 0.0f,
-                 width / (window.getWidth() / 2.0f),
-                 height / (window.getHeight() / 2.0f),
-                 0.0f,
-                 -width / (window.getWidth() / 2.0f),
-                 height / (window.getHeight() / 2.0f),
-                 0.0f},
-      m_indices{0, 1, 2, 0, 2, 3}, m_width(width), m_height(height),
-      m_pWindow(&window) {
+    : m_vertices{
+        -width / (window.getWidth() / 2.0f), -height / (window.getHeight() / 2.0f), 0.0f, // bottom left
+         width / (window.getWidth() / 2.0f), -height / (window.getHeight() / 2.0f), 0.0f, // bottom right
+         width / (window.getWidth() / 2.0f),  height / (window.getHeight() / 2.0f), 0.0f, // top right
+        -width / (window.getWidth() / 2.0f),  height / (window.getHeight() / 2.0f), 0.0f  // top left
+      },
+      m_indices{
+        0, 1, 2, // first triangle
+        0, 2, 3  // second triangle
+      },
+      m_width(width), m_height(height), m_pWindow(&window) {
+
+  // Shader setup
   m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
   const char *vs = m_vertexShaderSource.c_str();
   glShaderSource(m_vertexShader, 1, &vs, nullptr);
@@ -34,6 +33,7 @@ Rectangle::Rectangle(const float &width, const float &height, Window &window)
   glDeleteShader(m_vertexShader);
   glDeleteShader(m_fragmentShader);
 
+  // VBO/VAO/EBO setup
   glGenVertexArrays(1, &m_VAO);
   glGenBuffers(1, &m_VBO);
   glGenBuffers(1, &m_EBO);
@@ -51,9 +51,10 @@ Rectangle::Rectangle(const float &width, const float &height, Window &window)
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
-  // Apply initial pixel-to-NDC mapping
+  // Initial calculation based on window dimensions
   updateVertices();
 }
 
@@ -87,7 +88,7 @@ void Rectangle::updateVertices() {
   float width = static_cast<float>(m_pWindow->getWidth());
   float height = static_cast<float>(m_pWindow->getHeight());
 
-  // Map pixel coordinates to NDC
+  // Convert pixel coordinates (m_x, m_y) to Normalized Device Coordinates (NDC)
   float ndcX = (m_x / (width / 2.0f)) - 1.0f;
   float ndcY = 1.0f - (m_y / (height / 2.0f));
 
@@ -102,6 +103,7 @@ void Rectangle::updateVertices() {
       ndcX - ndcHalfWidth, ndcY + ndcHalfHeight, 0.0f  // top left
   };
 
+  // Push updated vertex data to the GPU
   glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
   glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float),
                   m_vertices.data());
