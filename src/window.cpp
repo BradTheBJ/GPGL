@@ -62,4 +62,14 @@ namespace gpgl
     {
         glfwSwapBuffers(m_window);
     }
+
+    uint Window::getWidth() const
+    {
+        return m_width;
+    }
+
+    uint Window::getHeight() const
+    {
+        return m_height;
+    }
 }

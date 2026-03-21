@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "color.h"
 
+
 using uint = unsigned int;
 
 namespace gpgl
@@ -23,6 +24,9 @@ namespace gpgl
         void clear();
 
         void display();
+
+        uint getWidth() const;
+        uint getHeight() const;
 
     private:
         uint m_width;
