@@ -34,5 +34,7 @@ namespace gpgl
         std::string_view m_title;
         GLFWwindow* m_window;
         Color m_color{255,255,255,255}; // Defult color to white
+
+        static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
     };
 }

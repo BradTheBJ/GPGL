@@ -1,34 +1,60 @@
 #include "window.h"
 
 #include <iostream>
-#include <ostream>
+#include <cstdlib>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 namespace gpgl
 {
+    void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+    {
+        auto* self = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        if (self)
+        {
+            self->m_width = static_cast<uint>(width);
+            self->m_height = static_cast<uint>(height);
+        }
+        glViewport(0, 0, width, height);
+    }
+
     Window::Window(const uint& width, const uint& height, std::string_view title)
     {
         glfwInit();
+
         m_width = width;
         m_height = height;
         m_title = title;
+
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
         m_window = glfwCreateWindow(m_width, m_height, m_title.data(), nullptr, nullptr);
 
         if (!m_window)
         {
-            std::cerr << "Failed to create GLFW window" << std::endl;
+            std::cerr << "Failed to create GLFW window\n";
             glfwTerminate();
             std::exit(1);
         }
 
         glfwMakeContextCurrent(m_window);
 
-        gladLoadGL();
+        if (!gladLoadGL())
+        {
+            std::cerr << "Failed to initialize GLAD\n";
+            std::exit(1);
+        }
 
-        glViewport(0, 0, m_width, m_height);
+        glfwSetWindowUserPointer(m_window, this);
+        glfwSetFramebufferSizeCallback(m_window, framebufferSizeCallback);
+
+        int fbWidth, fbHeight;
+        glfwGetFramebufferSize(m_window, &fbWidth, &fbHeight);
+        m_width = static_cast<uint>(fbWidth);
+        m_height = static_cast<uint>(fbHeight);
+        glViewport(0, 0, fbWidth, fbHeight);
     }
 
     Window::~Window()
