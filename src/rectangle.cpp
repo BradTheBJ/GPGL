@@ -2,12 +2,19 @@
 
 namespace gpgl
 {
-    Rectangle::Rectangle()
+    Rectangle::Rectangle(const float& width, const float& height, Window& window)
     : m_vertices{
-        -0.5f, -0.5f, 0.0f,  // 0 bottom left
-         0.5f, -0.5f, 0.0f,  // 1 bottom right
-         0.5f,  0.5f, 0.0f,  // 2 top right
-        -0.5f,  0.5f, 0.0f   // 3 top left
+        -width  / (window.getWidth()  / 2.0f),  // bottom left x
+        -height / (window.getHeight() / 2.0f), 0.0f,
+
+         width  / (window.getWidth()  / 2.0f),  // bottom right x
+        -height / (window.getHeight() / 2.0f), 0.0f,
+
+         width  / (window.getWidth()  / 2.0f),  // top right x
+         height / (window.getHeight() / 2.0f), 0.0f,
+
+        -width  / (window.getWidth()  / 2.0f),  // top left x
+         height / (window.getHeight() / 2.0f), 0.0f
     },
     m_indices{
         0, 1, 2,

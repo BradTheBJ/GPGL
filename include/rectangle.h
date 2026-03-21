@@ -2,13 +2,14 @@
 #include "shader.h"
 #include <glad/glad.h>
 #include <array>
+#include  "window.h"
 
 namespace gpgl
 {
     class Rectangle
     {
         public:
-        Rectangle();
+        Rectangle(const float& width, const float& height, Window& window);
         ~Rectangle();
 
         void draw();
