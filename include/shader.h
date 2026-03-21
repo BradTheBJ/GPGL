@@ -6,7 +6,7 @@
 
 using fs = std::filesystem::path;
 
-namespace s3dl
+namespace gpgl
 {
     struct Shader
     {

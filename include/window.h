@@ -6,7 +6,7 @@
 
 using uint = unsigned int;
 
-namespace s3dl
+namespace gpgl
 {
     class Window
     {

@@ -3,7 +3,7 @@
 
 #include "window.h"
 
-namespace s3dl
+namespace gpgl
 {
     struct Color {
         float r, g, b, a;

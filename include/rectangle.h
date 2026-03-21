@@ -1,26 +1,28 @@
 #pragma once
 #include "shader.h"
-#include <array>
 #include <glad/glad.h>
+#include <array>
 
 namespace gpgl
 {
-    class Triangle
+    class Rectangle
     {
         public:
-        Triangle();
-        ~Triangle();
+        Rectangle();
+        ~Rectangle();
 
         void draw();
 
         private:
         Shader m_vertexShaderSource{"../shaders/vertexShader.glsl"};
         Shader m_fragmentShaderSource{"../shaders/fragShader.glsl"};
-        std::array<GLfloat, 9> m_vertices;
         GLuint m_vertexShader = 0;
         GLuint m_fragmentShader = 0;
         GLuint m_shaderProgram = 0;
         GLuint m_VBO = 0;
         GLuint m_VAO = 0;
+        GLuint m_EBO = 0;
+        std::array<GLfloat, 12> m_vertices;
+        std::array<GLuint, 6> m_indices;
     };
 }
