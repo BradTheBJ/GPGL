@@ -2,13 +2,14 @@
 #include "shader.h"
 #include <array>
 #include <glad/glad.h>
+#include "window.h"
 
 namespace gpgl
 {
     class Triangle
     {
         public:
-        Triangle();
+        Triangle(const float& base, const float& height, Window& window);
         ~Triangle();
 
         void draw();

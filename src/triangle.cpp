@@ -4,13 +4,21 @@
 
 namespace gpgl
 {
-    Triangle::Triangle()
-        : m_vertices{
-            0.0f, 0.5f, 0.0f,
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f
-        }
+    Triangle::Triangle(const float& base, const float& height, Window& window)
+    : m_vertices{
+        0.0f, height / (window.getHeight() / 2.0f), 0.0f, // top
+       -base / (window.getWidth() / 2.0f), -height / (window.getHeight() / 2.0f), 0.0f, // bottom left
+        base / (window.getWidth() / 2.0f), -height / (window.getHeight() / 2.0f), 0.0f  // bottom right
+   }
     {
+        if (base < 0.0f)
+        {
+            throw std::invalid_argument("base must be greater than 0.0");
+        }
+        if (height < 0.0f)
+        {
+            throw std::invalid_argument("width must be greater than 0.0");
+        }
         m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
         const char* vertexSource = m_vertexShaderSource.c_str();
         glShaderSource(m_vertexShader, 1, &vertexSource, nullptr);

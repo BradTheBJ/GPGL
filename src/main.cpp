@@ -8,13 +8,13 @@ int main()
     std::cout << "Hello World!" << std::endl;
     gpgl::Window window(800, 600, "Hello OpenGL!");
     gpgl::Color color(20, 20, 100, 255);
-    gpgl::Rectangle rect;
+    gpgl::Triangle trig(100,100,window);
     window.setClearColor(color);
     while (!window.shouldWindowClose())
     {
         window.processEvents();
         window.clear();
-        rect.draw();
+        trig.draw();
         window.display();
     }
 }
