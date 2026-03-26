@@ -1,7 +1,5 @@
 #include "triangle.h"
 
-#include <stdexcept>
-
 namespace gpgl {
 Triangle::Triangle(const float& base, const float& height, Window& window)
     : m_pWindow(&window), m_base(base), m_height(height) {
@@ -93,11 +91,24 @@ void Triangle::calculateShaders() {
     const char* vs = m_vertexShaderSource.c_str();
     glShaderSource(m_vertexShader, 1, &vs, nullptr);
     glCompileShader(m_vertexShader);
+    int success;
+    char infoLog[512];  // character buffer
+    glGetShaderiv(m_vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success) { // Check if the vertex shader compiled
+        glGetShaderInfoLog(m_vertexShader, 512, NULL, infoLog);
+        throw std::runtime_error(std::string("VERTEX SHADER COMPILATION FAILED: ") + infoLog);
+    }
 
     m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     const char* fs = m_fragmentShaderSource.c_str();
     glShaderSource(m_fragmentShader, 1, &fs, nullptr);
     glCompileShader(m_fragmentShader);
+
+    glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(m_fragmentShader, 512, NULL, infoLog);
+        throw std::runtime_error(std::string("FRAGMENT SHADER COMPILATION FAILED: ") + infoLog);
+    }
 
     m_shaderProgram = glCreateProgram();
     glAttachShader(m_shaderProgram, m_vertexShader);
