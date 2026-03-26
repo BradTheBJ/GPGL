@@ -21,16 +21,14 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
         glfwCreateWindow(m_width, m_height, m_title.data(), nullptr, nullptr);
 
     if (!m_window) {
-        std::cerr << "Failed to create GLFW window\n";
+        throw new std::runtime_error("Failed to create GLFW window.");
         glfwTerminate();
-        std::exit(1);
     }
 
     glfwMakeContextCurrent(m_window);
 
     if (!gladLoadGL()) {
-        std::cerr << "Failed to initialize GLAD\n";
-        std::exit(1);
+        throw new std::runtime_error("Failed to initialize GLAD.");
     }
 
     glfwSetWindowUserPointer(m_window, this);
@@ -45,7 +43,6 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
 
 Window::~Window() {
     glfwDestroyWindow(m_window);
-    glfwTerminate();
 }
 
 bool Window::shouldWindowClose() const {
