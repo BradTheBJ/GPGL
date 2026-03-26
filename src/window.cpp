@@ -1,6 +1,7 @@
 #include "window.h"
 
-// glad/glad.h and GLFW/glfw3.h are already pulled in (correct order) via window.h
+// glad/glad.h and GLFW/glfw3.h are already pulled in (correct order) via
+// window.h
 #include <cstdlib>
 #include <iostream>
 
@@ -28,7 +29,8 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
     // Make this window's OpenGL context current on the calling thread
     glfwMakeContextCurrent(m_window);
 
-    // Load all OpenGL function pointers via GLAD; must happen after context creation
+    // Load all OpenGL function pointers via GLAD; must happen after context
+    // creation
     if (!gladLoadGL()) {
         throw new std::runtime_error("Failed to initialize GLAD.");
     }
@@ -37,7 +39,8 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
     glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, framebufferSizeCallback);
 
-    // Query actual framebuffer size (may differ from window size on HiDPI displays)
+    // Query actual framebuffer size (may differ from window size on HiDPI
+    // displays)
     int fbWidth, fbHeight;
     glfwGetFramebufferSize(m_window, &fbWidth, &fbHeight);
     m_width = static_cast<uint>(fbWidth);
@@ -46,9 +49,7 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
     glViewport(0, 0, fbWidth, fbHeight);
 }
 
-Window::~Window() {
-    glfwDestroyWindow(m_window);
-}
+Window::~Window() { glfwDestroyWindow(m_window); }
 
 bool Window::shouldWindowClose() const {
     return glfwWindowShouldClose(m_window);

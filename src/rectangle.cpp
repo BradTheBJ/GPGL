@@ -18,7 +18,7 @@ Rectangle::Rectangle(const float& width, const float& height, Window& window)
     {
     // Shader setup
     int success;
-    char infoLog[512];  // character buffer
+    char infoLog[512]; // character buffer
 
     m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
     const char* vs = m_vertexShaderSource.c_str();
@@ -28,7 +28,8 @@ Rectangle::Rectangle(const float& width, const float& height, Window& window)
     glGetShaderiv(m_vertexShader, GL_COMPILE_STATUS, &success);
     if (!success) { // Check if the vertex shader compiled
         glGetShaderInfoLog(m_vertexShader, 512, NULL, infoLog);
-        throw std::runtime_error(std::string("VERTEX SHADER COMPILATION FAILED: ") + infoLog);
+        throw std::runtime_error(
+            std::string("VERTEX SHADER COMPILATION FAILED: ") + infoLog);
     }
 
     m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -39,11 +40,13 @@ Rectangle::Rectangle(const float& width, const float& height, Window& window)
     glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) { // Check if the vertex shader compiled
         glGetShaderInfoLog(m_fragmentShader, 512, NULL, infoLog);
-        throw std::runtime_error(std::string("FRAGMENT SHADER COMPILATION FAILED: ") + infoLog);
+        throw std::runtime_error(
+            std::string("FRAGMENT SHADER COMPILATION FAILED: ") + infoLog);
     }
 
-    // Create a shader program and attach the compiled shaders into the shader program
-    // glCreateProgram returns a handle to a new program object that shaders link into
+    // Create a shader program and attach the compiled shaders into the shader
+    // program glCreateProgram returns a handle to a new program object that
+    // shaders link into
     m_shaderProgram = glCreateProgram();
     glAttachShader(m_shaderProgram, m_vertexShader);
     glAttachShader(m_shaderProgram, m_fragmentShader);
@@ -73,14 +76,15 @@ Rectangle::Rectangle(const float& width, const float& height, Window& window)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint),
                  m_indices.data(), GL_DYNAMIC_DRAW);
 
-    // Describe attribute 0: 3 floats per vertex, tightly packed, starting at offset 0.
-    // This tells the vertex shader how to read each vertex from the VBO.
+    // Describe attribute 0: 3 floats per vertex, tightly packed, starting at
+    // offset 0. This tells the vertex shader how to read each vertex from the
+    // VBO.
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                           (void*)0);
     glEnableVertexAttribArray(0); // Enable attribute slot 0 for the VAO
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind VBO (VAO retains the reference)
-    glBindVertexArray(0);             // Unbind VAO to prevent accidental state changes
+    glBindVertexArray(0); // Unbind VAO to prevent accidental state changes
 
     // Initial calculation based on window dimensions
     updateVertices();
@@ -88,16 +92,18 @@ Rectangle::Rectangle(const float& width, const float& height, Window& window)
 
 Rectangle::~Rectangle() {
     // Release GPU resources in reverse order of creation
-    glDeleteVertexArrays(1, &m_VAO); // Unbind and delete the vertex array object
-    glDeleteBuffers(1, &m_VBO);      // Free the vertex buffer on the GPU
-    glDeleteBuffers(1, &m_EBO);      // Free the index buffer on the GPU
+    glDeleteVertexArrays(1,
+                         &m_VAO); // Unbind and delete the vertex array object
+    glDeleteBuffers(1, &m_VBO);   // Free the vertex buffer on the GPU
+    glDeleteBuffers(1, &m_EBO);   // Free the index buffer on the GPU
     glDeleteProgram(m_shaderProgram); // Destroy the linked shader program
 }
 
 void Rectangle::draw() {
     // Activate the shader program for this rectangle
-    glUseProgram(m_shaderProgram); // Sets the active shader program for subsequent draw calls
-    glBindVertexArray(m_VAO);      // Restore the vertex layout and buffer bindings
+    glUseProgram(m_shaderProgram); // Sets the active shader program for
+                                   // subsequent draw calls
+    glBindVertexArray(m_VAO); // Restore the vertex layout and buffer bindings
     // Draw 6 indices (2 triangles) as unsigned ints; no offset into the EBO
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -130,7 +136,8 @@ void Rectangle::updateVertices() {
     float height = static_cast<float>(m_pWindow->getHeight());
 
     // Convert pixel coordinates (m_x, m_y) to Normalized Device Coordinates
-    // (NDC). NDC range is [-1, 1] on both axes; (0,0) is top-left in pixel space.
+    // (NDC). NDC range is [-1, 1] on both axes; (0,0) is top-left in pixel
+    // space.
     float ndcX = (m_x / (width / 2.0f)) - 1.0f;
     float ndcY = 1.0f - (m_y / (height / 2.0f));
 
@@ -148,10 +155,12 @@ void Rectangle::updateVertices() {
     // Push updated vertex data to the GPU
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO); // Target the VBO for writing
     // Overwrite a sub-range of the buffer (offset 0, full vertex array size)
-    // using glBufferSubData instead of glBufferData to avoid a full reallocation
+    // using glBufferSubData instead of glBufferData to avoid a full
+    // reallocation
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float),
                     m_vertices.data());
-    glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind to prevent accidental modification
+    glBindBuffer(GL_ARRAY_BUFFER,
+                 0); // Unbind to prevent accidental modification
 }
 
 void Rectangle::calculateShaders() {
@@ -201,7 +210,8 @@ void Rectangle::calculateShaders() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint),
                  m_indices.data(), GL_DYNAMIC_DRAW);
 
-    // Describe attribute 0: 3 floats per vertex, tightly packed, starting at offset 0
+    // Describe attribute 0: 3 floats per vertex, tightly packed, starting at
+    // offset 0
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                           (void*)0);
     glEnableVertexAttribArray(0);

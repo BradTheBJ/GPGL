@@ -7,7 +7,8 @@ namespace gpgl {
 struct Color {
     float r, g, b, a;
 
-    // Constructor taking 0-255 ints; converts to the [0, 1] range OpenGL expects
+    // Constructor taking 0-255 ints; converts to the [0, 1] range OpenGL
+    // expects
     Color(const unsigned int& red, const unsigned int& green,
           const unsigned int& blue, const unsigned int& alpha = 255) {
         r = red / 255.0f;
