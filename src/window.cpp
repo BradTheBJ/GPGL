@@ -7,24 +7,13 @@
 
 namespace gpgl
 {
-    void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
-    {
-        auto* self = static_cast<Window*>(glfwGetWindowUserPointer(window));
-        if (self)
-        {
-            self->m_width = static_cast<uint>(width);
-            self->m_height = static_cast<uint>(height);
-        }
-        glViewport(0, 0, width, height);
-    }
-
     Window::Window(const uint& width, const uint& height, std::string_view title)
     {
         glfwInit();
 
-        m_width = width;
+        m_width  = width;
         m_height = height;
-        m_title = title;
+        m_title  = title;
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -52,7 +41,7 @@ namespace gpgl
 
         int fbWidth, fbHeight;
         glfwGetFramebufferSize(m_window, &fbWidth, &fbHeight);
-        m_width = static_cast<uint>(fbWidth);
+        m_width  = static_cast<uint>(fbWidth);
         m_height = static_cast<uint>(fbHeight);
         glViewport(0, 0, fbWidth, fbHeight);
     }
@@ -98,4 +87,15 @@ namespace gpgl
     {
         return m_height;
     }
-}
+
+    void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+    {
+        auto* self = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        if (self)
+        {
+            self->m_width  = static_cast<uint>(width);
+            self->m_height = static_cast<uint>(height);
+        }
+        glViewport(0, 0, width, height);
+    }
+} // namespace gpgl
