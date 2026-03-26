@@ -2,10 +2,12 @@
 #include <array>
 
 namespace gpgl {
+// Stores an RGBA color as normalized floats in [0, 1].
+// glClearColor and glVertexAttrib* expect this range, not the 0-255 byte form.
 struct Color {
     float r, g, b, a;
 
-    // Constructor taking 0-255 ints
+    // Constructor taking 0-255 ints; converts to the [0, 1] range OpenGL expects
     Color(const unsigned int& red, const unsigned int& green,
           const unsigned int& blue, const unsigned int& alpha = 255) {
         r = red / 255.0f;

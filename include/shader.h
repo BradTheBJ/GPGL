@@ -7,6 +7,8 @@
 using fs = std::filesystem::path;
 
 namespace gpgl {
+// Reads a GLSL shader file from disk and holds the source as a string.
+// The source is passed directly to glShaderSource at compile time.
 struct Shader {
     std::string source;
 
