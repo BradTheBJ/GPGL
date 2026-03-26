@@ -1,8 +1,7 @@
 #include "window.h"
 
-#include <GLFW/glfw3.h>
+// glad/glad.h and GLFW/glfw3.h are already pulled in (correct order) via window.h
 #include <cstdlib>
-#include <glad/glad.h>
 #include <iostream>
 
 namespace gpgl {

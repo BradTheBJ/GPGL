@@ -1,7 +1,7 @@
 #pragma once
 #include "color.h"
+#include <glad/glad.h>    // glad must come before GLFW to prevent raw GL header conflicts
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <string_view>
 
 using uint = unsigned int;
