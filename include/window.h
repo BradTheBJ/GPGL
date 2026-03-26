@@ -1,40 +1,38 @@
 #pragma once
+#include "color.h"
+#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <string_view>
-#include <GLFW/glfw3.h>
-#include "color.h"
-
 
 using uint = unsigned int;
 
-namespace gpgl
-{
-    class Window
-    {
-    public:
-        Window(const uint& width, const uint& height, std::string_view title);
-        ~Window();
+namespace gpgl {
+class Window {
+  public:
+    Window(const uint& width, const uint& height, std::string_view title);
+    ~Window();
 
-        bool shouldWindowClose() const;
+    bool shouldWindowClose() const;
 
-        void processEvents();
+    void processEvents();
 
-        void setClearColor(const Color& color);
+    void setClearColor(const Color& color);
 
-        void clear();
+    void clear();
 
-        void display();
+    void display();
 
-        uint getWidth() const;
-        uint getHeight() const;
+    uint getWidth() const;
+    uint getHeight() const;
 
-    private:
-        uint m_width;
-        uint m_height;
-        std::string_view m_title;
-        GLFWwindow* m_window;
-        Color m_color{255, 255, 255, 255}; // Default color to white
+  private:
+    uint m_width;
+    uint m_height;
+    std::string_view m_title;
+    GLFWwindow* m_window;
+    Color m_color{255, 255, 255, 255}; // Default color to white
 
-        static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
-    };
+    static void framebufferSizeCallback(GLFWwindow* window, int width,
+                                        int height);
+};
 } // namespace gpgl

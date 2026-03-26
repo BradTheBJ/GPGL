@@ -2,134 +2,130 @@
 
 #include <stdexcept>
 
-namespace gpgl
-{
-    Triangle::Triangle(const float& base, const float& height, Window& window)
-        : m_pWindow(&window), m_base(base), m_height(height)
-    {
-        if (base < 0.0f)
-            throw std::invalid_argument("base must be greater than 0.0");
-        if (height < 0.0f)
-            throw std::invalid_argument("height must be greater than 0.0");
+namespace gpgl {
+Triangle::Triangle(const float& base, const float& height, Window& window)
+    : m_pWindow(&window), m_base(base), m_height(height) {
+    if (base < 0.0f)
+        throw std::invalid_argument("base must be greater than 0.0");
+    if (height < 0.0f)
+        throw std::invalid_argument("height must be greater than 0.0");
 
-        calculateShaders();
-    }
+    calculateShaders();
+}
 
-    Triangle::~Triangle()
-    {
-        glDeleteVertexArrays(1, &m_VAO);
-        glDeleteBuffers(1, &m_VBO);
+Triangle::~Triangle() {
+    glDeleteVertexArrays(1, &m_VAO);
+    glDeleteBuffers(1, &m_VBO);
+    glDeleteProgram(m_shaderProgram);
+}
+
+void Triangle::draw() {
+    glUseProgram(m_shaderProgram);
+    glBindVertexArray(m_VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void Triangle::setPosition(const float& x, const float& y) {
+    m_x = x;
+    m_y = y;
+    updateVertices();
+}
+
+const float& Triangle::getPositionX() const { return m_x; }
+
+const float& Triangle::getPositionY() const { return m_y; }
+
+void Triangle::setFrag(const std::filesystem::path& path) {
+    m_fragmentShaderSource = Shader(path);
+    calculateShaders();
+}
+
+void Triangle::setVertex(const std::filesystem::path& path) {
+    m_vertexShaderSource = Shader(path);
+    calculateShaders();
+}
+
+void Triangle::updateVertices() {
+    if (!m_pWindow)
+        return;
+
+    float width = static_cast<float>(m_pWindow->getWidth());
+    float height = static_cast<float>(m_pWindow->getHeight());
+
+    // Convert pixel coordinates (m_x, m_y) to Normalized Device Coordinates
+    // (NDC)
+    float ndcX = (m_x / (width / 2.0f)) - 1.0f;
+    float ndcY = 1.0f - (m_y / (height / 2.0f));
+
+    float ndcBase = m_base / (width / 2.0f);
+    float ndcHeight = m_height / (height / 2.0f);
+
+    m_vertices = {
+        ndcX,
+        ndcY + ndcHeight / 2.0f,
+        0.0f, // top
+        ndcX - ndcBase / 2.0f,
+        ndcY - ndcHeight / 2.0f,
+        0.0f, // bottom left
+        ndcX + ndcBase / 2.0f,
+        ndcY - ndcHeight / 2.0f,
+        0.0f // bottom right
+    };
+
+    // Push updated vertex data to the GPU
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float),
+                    m_vertices.data());
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Triangle::calculateShaders() {
+    // Cleanup existing resources if any
+    if (m_shaderProgram)
         glDeleteProgram(m_shaderProgram);
-    }
+    if (m_VAO)
+        glDeleteVertexArrays(1, &m_VAO);
+    if (m_VBO)
+        glDeleteBuffers(1, &m_VBO);
 
-    void Triangle::draw()
-    {
-        glUseProgram(m_shaderProgram);
-        glBindVertexArray(m_VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-    }
+    // Shader setup
+    m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const char* vs = m_vertexShaderSource.c_str();
+    glShaderSource(m_vertexShader, 1, &vs, nullptr);
+    glCompileShader(m_vertexShader);
 
-    void Triangle::setPosition(const float& x, const float& y)
-    {
-        m_x = x;
-        m_y = y;
-        updateVertices();
-    }
+    m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const char* fs = m_fragmentShaderSource.c_str();
+    glShaderSource(m_fragmentShader, 1, &fs, nullptr);
+    glCompileShader(m_fragmentShader);
 
-    const float& Triangle::getPositionX() const
-    {
-        return m_x;
-    }
+    m_shaderProgram = glCreateProgram();
+    glAttachShader(m_shaderProgram, m_vertexShader);
+    glAttachShader(m_shaderProgram, m_fragmentShader);
+    glLinkProgram(m_shaderProgram);
 
-    const float& Triangle::getPositionY() const
-    {
-        return m_y;
-    }
+    glDeleteShader(m_vertexShader);
+    glDeleteShader(m_fragmentShader);
 
-    void Triangle::setFrag(const std::filesystem::path& path)
-    {
-        m_fragmentShaderSource = Shader(path);
-        calculateShaders();
-    }
+    // VBO/VAO setup
+    glGenVertexArrays(1, &m_VAO);
+    glGenBuffers(1, &m_VBO);
 
-    void Triangle::setVertex(const std::filesystem::path& path)
-    {
-        m_vertexShaderSource = Shader(path);
-        calculateShaders();
-    }
+    glBindVertexArray(m_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 
-    void Triangle::updateVertices()
-    {
-        if (!m_pWindow)
-            return;
+    // Fill with dummy data initially; updateVertices will perform mapping
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(float),
+                 m_vertices.data(), GL_DYNAMIC_DRAW);
 
-        float width  = static_cast<float>(m_pWindow->getWidth());
-        float height = static_cast<float>(m_pWindow->getHeight());
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                          (void*)0);
+    glEnableVertexAttribArray(0);
 
-        // Convert pixel coordinates (m_x, m_y) to Normalized Device Coordinates (NDC)
-        float ndcX = (m_x / (width  / 2.0f)) - 1.0f;
-        float ndcY = 1.0f - (m_y / (height / 2.0f));
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
-        float ndcBase   = m_base   / (width  / 2.0f);
-        float ndcHeight = m_height / (height / 2.0f);
-
-        m_vertices = {
-            ndcX,                    ndcY + ndcHeight / 2.0f, 0.0f, // top
-            ndcX - ndcBase / 2.0f,  ndcY - ndcHeight / 2.0f, 0.0f, // bottom left
-            ndcX + ndcBase / 2.0f,  ndcY - ndcHeight / 2.0f, 0.0f  // bottom right
-        };
-
-        // Push updated vertex data to the GPU
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float),
-                        m_vertices.data());
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
-    void Triangle::calculateShaders()
-    {
-        // Cleanup existing resources if any
-        if (m_shaderProgram) glDeleteProgram(m_shaderProgram);
-        if (m_VAO) glDeleteVertexArrays(1, &m_VAO);
-        if (m_VBO) glDeleteBuffers(1, &m_VBO);
-
-        // Shader setup
-        m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        const char* vs = m_vertexShaderSource.c_str();
-        glShaderSource(m_vertexShader, 1, &vs, nullptr);
-        glCompileShader(m_vertexShader);
-
-        m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        const char* fs = m_fragmentShaderSource.c_str();
-        glShaderSource(m_fragmentShader, 1, &fs, nullptr);
-        glCompileShader(m_fragmentShader);
-
-        m_shaderProgram = glCreateProgram();
-        glAttachShader(m_shaderProgram, m_vertexShader);
-        glAttachShader(m_shaderProgram, m_fragmentShader);
-        glLinkProgram(m_shaderProgram);
-
-        glDeleteShader(m_vertexShader);
-        glDeleteShader(m_fragmentShader);
-
-        // VBO/VAO setup
-        glGenVertexArrays(1, &m_VAO);
-        glGenBuffers(1, &m_VBO);
-
-        glBindVertexArray(m_VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-
-        // Fill with dummy data initially; updateVertices will perform mapping
-        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(float),
-                     m_vertices.data(), GL_DYNAMIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-
-        // Initial calculation based on window dimensions
-        updateVertices();
-    }
+    // Initial calculation based on window dimensions
+    updateVertices();
+}
 } // namespace gpgl
