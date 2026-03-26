@@ -17,18 +17,30 @@ Rectangle::Rectangle(const float& width, const float& height, Window& window)
           m_width(width), m_height(height), m_pWindow(&window)
     {
     // Shader setup
-    // glCreateShader allocates a shader object on the GPU and returns its handle
+    int success;
+    char infoLog[512];  // character buffer
+
     m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
     const char* vs = m_vertexShaderSource.c_str();
     // Upload the GLSL source; the count (1) is the number of source strings
     glShaderSource(m_vertexShader, 1, &vs, nullptr);
-    glCompileShader(m_vertexShader); // Compile to GPU bytecode
+    glCompileShader(m_vertexShader);
+    glGetShaderiv(m_vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success) { // Check if the vertex shader compiled
+        glGetShaderInfoLog(m_vertexShader, 512, NULL, infoLog);
+        throw std::runtime_error(std::string("VERTEX SHADER COMPILATION FAILED: ") + infoLog);
+    }
 
     m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     const char* fs = m_fragmentShaderSource.c_str();
     // Upload fragment shader source and compile
     glShaderSource(m_fragmentShader, 1, &fs, nullptr);
     glCompileShader(m_fragmentShader);
+    glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success) { // Check if the vertex shader compiled
+        glGetShaderInfoLog(m_fragmentShader, 512, NULL, infoLog);
+        throw std::runtime_error(std::string("FRAGMENT SHADER COMPILATION FAILED: ") + infoLog);
+    }
 
     // Create a shader program and attach the compiled shaders into the shader program
     // glCreateProgram returns a handle to a new program object that shaders link into

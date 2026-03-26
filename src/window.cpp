@@ -22,9 +22,8 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
         glfwCreateWindow(m_width, m_height, m_title.data(), nullptr, nullptr);
 
     if (!m_window) {
-        std::cerr << "Failed to create GLFW window\n";
+        throw new std::runtime_error("Failed to create GLFW window.");
         glfwTerminate();
-        std::exit(1);
     }
 
     // Make this window's OpenGL context current on the calling thread
@@ -32,8 +31,7 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
 
     // Load all OpenGL function pointers via GLAD; must happen after context creation
     if (!gladLoadGL()) {
-        std::cerr << "Failed to initialize GLAD\n";
-        std::exit(1);
+        throw new std::runtime_error("Failed to initialize GLAD.");
     }
 
     // Store a pointer to this Window so the static callback can reach it
@@ -50,8 +48,7 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
 }
 
 Window::~Window() {
-    glfwDestroyWindow(m_window); // Destroy the OS window and its GL context
-    glfwTerminate();             // Shut down GLFW and free internal resources
+    glfwDestroyWindow(m_window);
 }
 
 bool Window::shouldWindowClose() const {
