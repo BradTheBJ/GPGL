@@ -34,8 +34,8 @@ Rectangle::Rectangle(const float& width, const float& height, Window& window)
     glCompileShader(m_fragmentShader);
     glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) { // Check if the vertex shader compiled
-        glGetShaderInfoLog(m_vertexShader, 512, NULL, infoLog);
-        throw std::runtime_error(std::string("VERTEX SHADER COMPILATION FAILED: ") + infoLog);
+        glGetShaderInfoLog(m_fragmentShader, 512, NULL, infoLog);
+        throw std::runtime_error(std::string("FRAGMENT SHADER COMPILATION FAILED: ") + infoLog);
     }
 
     m_shaderProgram = glCreateProgram();
