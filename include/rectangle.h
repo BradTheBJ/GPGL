@@ -20,12 +20,7 @@ class Rectangle {
     void setVertex(const std::filesystem::path& path);
 
   private:
-    Shader m_vertexShaderSource{"../shaders/vertexShader.glsl"};
-    Shader m_fragmentShaderSource{"../shaders/fragShader.glsl"};
-    GLuint m_vertexShader = 0; // Handle to the compiled vertex shader object
-    GLuint m_fragmentShader =
-        0;                      // Handle to the compiled fragment shader object
-    GLuint m_shaderProgram = 0; // Handle to the linked shader program
+    Shader m_shader{"../shaders/vertexShader.glsl", "../shaders/fragShader.glsl"};
     GLuint m_VBO = 0; // Vertex Buffer Object — holds vertex data on the GPU
     GLuint m_VAO = 0; // Vertex Array Object — records buffer/attribute bindings
     GLuint m_EBO =
@@ -37,7 +32,5 @@ class Rectangle {
     Window* m_pWindow = nullptr;
 
     void updateVertices(); // Recalculate NDC positions and upload to GPU
-    void
-    calculateShaders(); // (Re)build the full shader pipeline and GPU buffers
 };
 } // namespace gpgl

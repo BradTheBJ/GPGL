@@ -1,4 +1,7 @@
 #include "shader.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 namespace gpgl {
 
