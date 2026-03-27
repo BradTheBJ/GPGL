@@ -1,28 +1,32 @@
 #pragma once
-#include <filesystem>
-#include <fstream>
-#include <sstream>
+#include <glad/glad.h>
 #include <string>
-
-using fs = std::filesystem::path;
+#include <filesystem>
+#include <string_view>
 
 namespace gpgl {
-// Reads a GLSL shader file from disk and holds the source as a string.
-// The source is passed directly to glShaderSource at compile time.
-struct Shader {
-    std::string source;
+    class Shader {
+    public:
+        // Shader program ID
+        unsigned int ID;
 
-    Shader(const fs& shaderFile) {
-        std::ifstream file(shaderFile);
-        if (!file.is_open())
-            throw std::runtime_error("Failed to open shader file: " +
-                                     shaderFile.string());
+        // Constructor reads and builds the shader
+        Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
 
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        source = buffer.str();
-    }
+        // Use/activate the shader
+        void use() const;
 
-    const char* c_str() const { return source.c_str(); }
-};
+        // Utility uniform functions
+        void setBool(std::string_view name, const bool& value) const;
+        void setInt(std::string_view name, const int& value) const;
+        void setFloat(std::string_view name, const float& value) const;
+
+    private:
+        std::string m_vertexCode;
+        std::string m_fragmentCode;
+        unsigned int m_vertexShader;
+        unsigned int m_fragmentShader;
+        int m_success;
+        char m_infoLog[512];
+    };
 } // namespace gpgl

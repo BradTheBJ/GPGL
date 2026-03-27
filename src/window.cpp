@@ -22,8 +22,8 @@ Window::Window(const uint& width, const uint& height, std::string_view title) {
         glfwCreateWindow(m_width, m_height, m_title.data(), nullptr, nullptr);
 
     if (!m_window) {
-        throw new std::runtime_error("Failed to create GLFW window.");
         glfwTerminate();
+        throw std::runtime_error("Failed to create GLFW window.");
     }
 
     // Make this window's OpenGL context current on the calling thread
