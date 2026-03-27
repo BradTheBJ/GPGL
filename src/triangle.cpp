@@ -88,7 +88,7 @@ void Triangle::updateVertices() {
 }
 
 void Triangle::setFrag(const std::filesystem::path& path) {
-    m_shader = Shader("../shaders/vertShader.glsl", path);
+    m_shader = Shader("../shaders/vertexShader.glsl", path);
 }
 
 void Triangle::setVertex(const std::filesystem::path& path) {
