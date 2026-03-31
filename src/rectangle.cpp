@@ -75,15 +75,7 @@ void Rectangle::setPosition(const float& x, const float& y) {
 const float& Rectangle::getPositionX() const { return m_x; }
 
 const float& Rectangle::getPositionY() const { return m_y; }
-
-void Rectangle::setFrag(const std::filesystem::path& path) {
-    m_shader = Shader("../shaders/vertexShader.glsl", path);
-}
-
-void Rectangle::setVertex(const std::filesystem::path& path) {
-    m_shader = Shader(path, "../shaders/fragShader.glsl");
-}
-
+    
 void Rectangle::updateVertices() {
     if (!m_pWindow)
         return;

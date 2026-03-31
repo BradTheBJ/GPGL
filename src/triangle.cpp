@@ -86,12 +86,4 @@ void Triangle::updateVertices() {
     glBindBuffer(GL_ARRAY_BUFFER,
                  0); // Unbind to prevent accidental modification
 }
-
-void Triangle::setFrag(const std::filesystem::path& path) {
-    m_shader = Shader("../shaders/vertexShader.glsl", path);
-}
-
-void Triangle::setVertex(const std::filesystem::path& path) {
-    m_shader = Shader(path, "../shaders/fragShader.glsl");
-}
 } // namespace gpgl
