@@ -1,6 +1,6 @@
 #include "triangle.h"
-#include <numbers>
 #include <cmath>
+#include <numbers>
 
 constexpr float PI = std::numbers::pi_v<float>;
 
@@ -17,8 +17,10 @@ Triangle::Triangle(const float& base, const float& height, Window& window)
 
     glBindVertexArray(m_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), nullptr, GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), nullptr,
+                 GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                          (void*)0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -90,12 +92,12 @@ void Triangle::updateVertices() {
     glBindBuffer(GL_ARRAY_BUFFER,
                  0); // Unbind to prevent accidental modification
 }
-void Triangle::rotate(const float &angle) {
+void Triangle::rotate(const float& angle) {
     if (!m_pWindow)
         return;
 
     const float height = static_cast<float>(m_pWindow->getHeight());
-    const float width  = static_cast<float>(m_pWindow->getWidth());
+    const float width = static_cast<float>(m_pWindow->getWidth());
 
     // Get the pivot in NDC coordinates
     float ndcPivotX = (m_x / (width / 2.0f)) - 1.0f;
@@ -104,9 +106,9 @@ void Triangle::rotate(const float &angle) {
     float rad = angle * (PI / 180.0f); // convert to radians
     float cosA = std::cos(rad);
     float sinA = std::sin(rad);
-    for (size_t i = 0; i < m_vertices.size(); i += 3)
-    {
-        // translate vertex relative to NDC pivot, and convert to pixel scale for aspect-correct rotation
+    for (size_t i = 0; i < m_vertices.size(); i += 3) {
+        // translate vertex relative to NDC pivot, and convert to pixel scale
+        // for aspect-correct rotation
         float px = (m_vertices[i] - ndcPivotX) * (width / 2.0f);
         float py = (m_vertices[i + 1] - ndcPivotY) * (height / 2.0f);
 
@@ -121,9 +123,9 @@ void Triangle::rotate(const float &angle) {
 
     // Push updated vertex data to the GPU
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float), m_vertices.data());
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float),
+                    m_vertices.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-
 
 } // namespace gpgl

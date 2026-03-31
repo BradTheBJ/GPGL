@@ -1,11 +1,12 @@
 #include "shader.h"
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 namespace gpgl {
 
-Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath) {
+Shader::Shader(const std::filesystem::path& vertexPath,
+               const std::filesystem::path& fragmentPath) {
     // 1. Read shader files into strings
     std::ifstream vShaderFile(vertexPath);
     std::ifstream fShaderFile(fragmentPath);
@@ -32,7 +33,8 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
     glGetShaderiv(m_vertexShader, GL_COMPILE_STATUS, &m_success);
     if (!m_success) {
         glGetShaderInfoLog(m_vertexShader, 512, nullptr, m_infoLog);
-        std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << m_infoLog << std::endl;
+        std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
+                  << m_infoLog << std::endl;
     }
 
     // 3. Compile fragment shader
@@ -43,7 +45,8 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
     glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &m_success);
     if (!m_success) {
         glGetShaderInfoLog(m_fragmentShader, 512, nullptr, m_infoLog);
-        std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << m_infoLog << std::endl;
+        std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
+                  << m_infoLog << std::endl;
     }
 
     // 4. Link shaders into a program
@@ -55,7 +58,8 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
     glGetProgramiv(ID, GL_LINK_STATUS, &m_success);
     if (!m_success) {
         glGetProgramInfoLog(ID, 512, nullptr, m_infoLog);
-        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << m_infoLog << std::endl;
+        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
+                  << m_infoLog << std::endl;
     }
 
     // 5. Delete shader objects after linking
@@ -63,12 +67,11 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
     glDeleteShader(m_fragmentShader);
 }
 
-void Shader::use() const {
-    glUseProgram(ID);
-}
+void Shader::use() const { glUseProgram(ID); }
 
 void Shader::setBool(std::string_view name, const bool& value) const {
-    glUniform1i(glGetUniformLocation(ID, std::string(name).c_str()), static_cast<int>(value));
+    glUniform1i(glGetUniformLocation(ID, std::string(name).c_str()),
+                static_cast<int>(value));
 }
 
 void Shader::setInt(std::string_view name, const int& value) const {
