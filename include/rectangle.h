@@ -16,8 +16,7 @@ class Rectangle {
     const float& getPositionX() const;
     const float& getPositionY() const;
 
-    void setFrag(const std::filesystem::path& path);
-    void setVertex(const std::filesystem::path& path);
+    void rotate(const float& angle);
 
   private:
     Shader m_shader{"../shaders/vertexShader.glsl", "../shaders/fragShader.glsl"};
