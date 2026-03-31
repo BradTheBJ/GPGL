@@ -9,11 +9,11 @@ int main() {
     gpgl::Color color(20, 20, 100, 255);
     gpgl::Triangle trig(100, 100, window);
     trig.setPosition(200, 500);
-    trig.setFrag("../shaders/testFrag.glsl");
     window.setClearColor(color);
     while (!window.shouldWindowClose()) {
         window.processEvents();
         window.clear();
+        trig.rotate(1);
         trig.draw();
         window.display();
     }

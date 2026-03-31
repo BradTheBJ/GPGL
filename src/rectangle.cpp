@@ -75,7 +75,7 @@ void Rectangle::setPosition(const float& x, const float& y) {
 const float& Rectangle::getPositionX() const { return m_x; }
 
 const float& Rectangle::getPositionY() const { return m_y; }
-    
+
 void Rectangle::updateVertices() {
     if (!m_pWindow)
         return;
