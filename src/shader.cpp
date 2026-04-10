@@ -6,7 +6,6 @@
 namespace gpgl {
 
 Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath) {
-    // 1. Read shader files into strings
     std::ifstream vShaderFile(vertexPath);
     std::ifstream fShaderFile(fragmentPath);
 
@@ -21,6 +20,29 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
     m_vertexCode = vShaderStream.str();
     m_fragmentCode = fShaderStream.str();
 
+    compileAndLink();
+}
+
+Shader::Shader(std::string_view vertexCode, const std::filesystem::path& fragmentPath) {
+    std::ifstream fShaderFile(fragmentPath);
+
+    if (!fShaderFile.is_open()) {
+        throw std::runtime_error("Failed to open fragment shader file");
+    }
+
+    std::stringstream fShaderStream;
+    fShaderStream << fShaderFile.rdbuf();
+
+    m_vertexCode = std::string(vertexCode);
+    m_fragmentCode = fShaderStream.str();
+
+    compileAndLink();
+}
+
+Shader::Shader(const std::filesystem::path& fragmentPath) 
+    : Shader(s_defaultVertexSource, fragmentPath) {}
+
+void Shader::compileAndLink() {
     const char* vShaderCode = m_vertexCode.c_str();
     const char* fShaderCode = m_fragmentCode.c_str();
 
