@@ -1,5 +1,8 @@
 #include "rectangle.h"
+#include <cmath>
 #include <numbers>
+
+constexpr float PI = std::numbers::pi_v<float>;
 
 namespace gpgl {
 Rectangle::Rectangle(const float& width, const float& height, Window& window)
@@ -69,14 +72,46 @@ const float& Rectangle::getPositionX() const { return m_x; }
 
 const float& Rectangle::getPositionY() const { return m_y; }
 
-void Rectangle::rotate(const float& degrees) {
-    m_rotation += degrees;
-}
-
 void Rectangle::updateVertices() {
     // Kept for compatibility or base/height changes
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float), m_vertices.data());
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Rectangle::rotate(const float& angle) {
+    if (!m_pWindow)
+        return;
+
+    const float height = static_cast<float>(m_pWindow->getHeight());
+    const float width = static_cast<float>(m_pWindow->getWidth());
+
+    // Get the pivot in NDC coordinates
+    float ndcPivotX = (m_x / (width / 2.0f)) - 1.0f;
+    float ndcPivotY = 1.0f - (m_y / (height / 2.0f));
+
+    float rad = angle * (PI / 180.0f); // convert to radians
+    float cosA = std::cos(rad);
+    float sinA = std::sin(rad);
+    for (size_t i = 0; i < m_vertices.size(); i += 3) {
+        // translate vertex relative to NDC pivot, and convert to pixel scale
+        // for aspect-correct rotation
+        float px = (m_vertices[i] - ndcPivotX) * (width / 2.0f);
+        float py = (m_vertices[i + 1] - ndcPivotY) * (height / 2.0f);
+
+        // rotate around Z axis
+        float px_new = px * cosA - py * sinA;
+        float py_new = px * sinA + py * cosA;
+
+        // convert back to NDC and apply back to the pivot
+        m_vertices[i] = (px_new / (width / 2.0f)) + ndcPivotX;
+        m_vertices[i + 1] = (py_new / (height / 2.0f)) + ndcPivotY;
+    }
+
+    // Push updated vertex data to the GPU
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float),
+                    m_vertices.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
