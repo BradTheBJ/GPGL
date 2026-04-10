@@ -4,6 +4,7 @@
 #include <iostream>
 
 int main() {
+    // Example script of GPGL
     std::cout << "Hello World!" << std::endl;
     gpgl::Window window(1920, 1080, "Hello OpenGL!");
     gpgl::Color color(20, 20, 100, 255);
