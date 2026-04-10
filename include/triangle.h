@@ -19,8 +19,7 @@ class Triangle {
     void rotate(const float& angle);
 
   private:
-    Shader m_shader{"../shaders/vertexShader.glsl",
-                    "../shaders/fragShader.glsl"};
+    Shader m_shader{"../shaders/fragShader.glsl"};
     GLuint m_VBO = 0; // Vertex Buffer Object — holds vertex data on the GPU
     GLuint m_VAO = 0; // Vertex Array Object — records buffer/attribute bindings
     float m_base = 0.0f, m_height = 0.0f;
