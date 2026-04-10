@@ -25,9 +25,10 @@ class Triangle {
     GLuint m_VAO = 0; // Vertex Array Object — records buffer/attribute bindings
     float m_base = 0.0f, m_height = 0.0f;
     GLfloat m_x = 0.0f, m_y = 0.0f;
+    float m_rotation = 0.0f;
     std::array<GLfloat, 9> m_vertices; // 3 vertices × 3 floats (x, y, z)
     Window* m_pWindow = nullptr;
 
-    void updateVertices(); // Recalculate NDC positions and upload to GPU
+    void updateVertices(); // Upload local pixel positions to GPU
 };
 } // namespace gpgl

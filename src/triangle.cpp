@@ -25,29 +25,32 @@ Triangle::Triangle(const float& base, const float& height, Window& window)
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-    updateVertices();
 }
 
 Triangle::~Triangle() {
-    // Release GPU resources in reverse order of creation
-    glDeleteVertexArrays(1,
-                         &m_VAO); // Unbind and delete the vertex array object
-    // Free the vertex buffer on the GPU
+    glDeleteVertexArrays(1, &m_VAO);
+    glDeleteBuffers(1, &m_VBO);
 }
 
 void Triangle::draw() {
-    // Activate the shader program for this triangle
     m_shader.use();
-    glBindVertexArray(m_VAO); // Restore the vertex layout and buffer bindings
-    glDrawArrays(GL_TRIANGLES, 0,
-                 3); // Draw 3 vertices as a single triangle (no index buffer)
+
+    // Set transformation uniforms
+    m_shader.setFloat("u_x", m_x);
+    m_shader.setFloat("u_y", m_y);
+    m_shader.setFloat("u_rotation", m_rotation * (std::numbers::pi_v<float> / 180.0f));
+    if (m_pWindow) {
+        m_shader.setFloat("u_windowWidth", static_cast<float>(m_pWindow->getWidth()));
+        m_shader.setFloat("u_windowHeight", static_cast<float>(m_pWindow->getHeight()));
+    }
+
+    glBindVertexArray(m_VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 void Triangle::setPosition(const float& x, const float& y) {
     m_x = x;
     m_y = y;
-    updateVertices();
 }
 
 const float& Triangle::getPositionX() const { return m_x; }

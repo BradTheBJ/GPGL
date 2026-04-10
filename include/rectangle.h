@@ -28,9 +28,10 @@ class Rectangle {
     std::array<GLfloat, 12> m_vertices; // 4 vertices × 3 floats (x, y, z)
     std::array<GLuint, 6> m_indices;    // 2 triangles × 3 indices
     float m_x = 0.0f, m_y = 0.0f;
+    float m_rotation = 0.0f;
     float m_width = 0.0f, m_height = 0.0f;
     Window* m_pWindow = nullptr;
 
-    void updateVertices(); // Recalculate NDC positions and upload to GPU
+    void updateVertices(); // Upload local pixel positions to GPU
 };
 } // namespace gpgl
