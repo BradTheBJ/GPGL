@@ -128,6 +128,12 @@ namespace gpgl {
     class InputHandler {
         public:
             InputHandler(Window& window) : m_window(window) {}
+
+            bool isKeyDown(Keys key) const;
+            bool isKeyUp(Keys key) const;
+            bool isKeyPressed(Keys key) const;
+            bool isKeyReleased(Keys key) const;
+            
         private:
             Window& m_window;
     };
