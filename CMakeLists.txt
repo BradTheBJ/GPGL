@@ -23,6 +23,7 @@ add_library(glad glad/src/glad.c)
 target_include_directories(glad PUBLIC glad/include)
 
 # Create executable (assuming main is in src)
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES}
+        include/shape.h)
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_libraries(${PROJECT_NAME} glad glfw)
