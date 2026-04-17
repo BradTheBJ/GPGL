@@ -1,0 +1,53 @@
+[  2%] Built target glad
+[ 14%] Built target glfw
+[ 14%] Building CXX object CMakeFiles/S3DL.dir/src/input.cpp.o
+In file included from /Users/bradbenjoya/Code/C++/GPGL/src/input.cpp:1:
+In file included from /Users/bradbenjoya/Code/C++/GPGL/include/input.h:2:
+In file included from /Users/bradbenjoya/Code/C++/GPGL/include/window.h:2:
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:20:34: warning: field 'r' is uninitialized when used here [-Wuninitialized]
+   20 |     std::array<float, 4> rgba = {r, g, b, a};
+      |                                  ^
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:12:5: note: during field initialization in this constructor
+   12 |     Color(const unsigned int& red, const unsigned int& green,
+      |     ^
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:20:37: warning: field 'g' is uninitialized when used here [-Wuninitialized]
+   20 |     std::array<float, 4> rgba = {r, g, b, a};
+      |                                     ^
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:12:5: note: during field initialization in this constructor
+   12 |     Color(const unsigned int& red, const unsigned int& green,
+      |     ^
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:20:40: warning: field 'b' is uninitialized when used here [-Wuninitialized]
+   20 |     std::array<float, 4> rgba = {r, g, b, a};
+      |                                        ^
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:12:5: note: during field initialization in this constructor
+   12 |     Color(const unsigned int& red, const unsigned int& green,
+      |     ^
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:20:43: warning: field 'a' is uninitialized when used here [-Wuninitialized]
+   20 |     std::array<float, 4> rgba = {r, g, b, a};
+      |                                           ^
+/Users/bradbenjoya/Code/C++/GPGL/include/color.h:12:5: note: during field initialization in this constructor
+   12 |     Color(const unsigned int& red, const unsigned int& green,
+      |     ^
+/Users/bradbenjoya/Code/C++/GPGL/src/input.cpp:6:36: error: no member named 'getWindow' in 'gpgl::Window'
+    6 |         return glfwGetKey(m_window.getWindow(), static_cast<int>(key)) == GLFW_PRESS;
+      |                           ~~~~~~~~ ^
+/Users/bradbenjoya/Code/C++/GPGL/src/input.cpp:10:36: error: no member named 'getWindow' in 'gpgl::Window'
+   10 |         return glfwGetKey(m_window.getWindow(), static_cast<int>(key)) == GLFW_RELEASE;
+      |                           ~~~~~~~~ ^
+/Users/bradbenjoya/Code/C++/GPGL/src/input.cpp:14:36: error: no member named 'getWindow' in 'gpgl::Window'
+   14 |         return glfwGetKey(m_window.getWindow(), static_cast<int>(key)) == GLFW_ PRESS;
+      |                           ~~~~~~~~ ^
+/Users/bradbenjoya/Code/C++/GPGL/src/input.cpp:14:75: error: use of undeclared identifier 'GLFW_'
+   14 |         return glfwGetKey(m_window.getWindow(), static_cast<int>(key)) == GLFW_ PRESS;
+      |                                                                           ^
+/Users/bradbenjoya/Code/C++/GPGL/src/input.cpp:14:80: error: expected ';' after return statement
+   14 |         return glfwGetKey(m_window.getWindow(), static_cast<int>(key)) == GLFW_ PRESS;
+      |                                                                                ^
+      |                                                                                ;
+/Users/bradbenjoya/Code/C++/GPGL/src/input.cpp:18:36: error: no member named 'getWindow' in 'gpgl::Window'
+   18 |         return glfwGetKey(m_window.getWindow(), static_cast<int>(key)) == GLFW_RELEASE;
+      |                           ~~~~~~~~ ^
+4 warnings and 6 errors generated.
+make[2]: *** [CMakeFiles/S3DL.dir/src/input.cpp.o] Error 1
+make[1]: *** [CMakeFiles/S3DL.dir/all] Error 2
+make: *** [all] Error 2

@@ -1,6 +1,5 @@
 #include "triangle.h"
 #include <numbers>
-#include <stdexcept>
 
 namespace gpgl {
 Triangle::Triangle(const float& base, const float& height, Window& window)

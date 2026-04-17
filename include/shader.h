@@ -61,9 +61,9 @@ void main()
     // Translate
     vec2 finalPixelPos = rotatedPos + vec2(u_x, u_y);
     
-    // Convert to NDC
-    float ndcX = (finalPixelPos.x / (u_windowWidth / 2.0)) - 1.0;
-    float ndcY = 1.0 - (finalPixelPos.y / (u_windowHeight / 2.0));
+    // Convert to NDC (Y=0 is top, +Y goes down)
+    float ndcX = (finalPixelPos.x / u_windowWidth) * 2.0 - 1.0;
+    float ndcY = 1.0 - (finalPixelPos.y / u_windowHeight) * 2.0;
     
     gl_Position = vec4(ndcX, ndcY, 0.0, 1.0);
 }
