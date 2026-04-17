@@ -1,7 +1,7 @@
+#include "input.h"
 #include "rectangle.h"
 #include "triangle.h"
 #include "window.h"
-#include "input.h"
 #include <iostream>
 
 int main() {
@@ -19,16 +19,21 @@ int main() {
         float speed = 2.0f;
 
         if (inputHandler.isKeyDown(gpgl::Keys::A)) {
-            rectangle.setPosition(rectangle.getPositionX() - speed, rectangle.getPositionY()); // Move left
+            rectangle.setPosition(rectangle.getPositionX() - speed,
+                                  rectangle.getPositionY()); // Move left
         }
         if (inputHandler.isKeyDown(gpgl::Keys::D)) {
-            rectangle.setPosition(rectangle.getPositionX() + speed, rectangle.getPositionY()); // Move right
+            rectangle.setPosition(rectangle.getPositionX() + speed,
+                                  rectangle.getPositionY()); // Move right
         }
         if (inputHandler.isKeyDown(gpgl::Keys::W)) {
-            rectangle.setPosition(rectangle.getPositionX(), rectangle.getPositionY() - speed); // Move up
+            rectangle.setPosition(rectangle.getPositionX(),
+                                  rectangle.getPositionY() - speed); // Move up
         }
-        if (inputHandler.isKeyDown(gpgl::Keys::S)) {        
-            rectangle.setPosition(rectangle.getPositionX(), rectangle.getPositionY() + speed); // Move down
+        if (inputHandler.isKeyDown(gpgl::Keys::S)) {
+            rectangle.setPosition(rectangle.getPositionX(),
+                                  rectangle.getPositionY() +
+                                      speed); // Move down
         }
 
         rectangle.draw();

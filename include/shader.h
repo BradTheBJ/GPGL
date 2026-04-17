@@ -15,7 +15,8 @@ class Shader {
            const std::filesystem::path& fragmentPath);
 
     // Constructor for fragment shader from file and vertex shader from string
-    Shader(std::string_view vertexCode, const std::filesystem::path& fragmentPath);
+    Shader(std::string_view vertexCode,
+           const std::filesystem::path& fragmentPath);
 
     // Constructor for fragment shader from file using default vertex shader
     Shader(const std::filesystem::path& fragmentPath);

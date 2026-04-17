@@ -25,7 +25,8 @@ Shader::Shader(const std::filesystem::path& vertexPath,
     compileAndLink();
 }
 
-Shader::Shader(std::string_view vertexCode, const std::filesystem::path& fragmentPath) {
+Shader::Shader(std::string_view vertexCode,
+               const std::filesystem::path& fragmentPath) {
     std::ifstream fShaderFile(fragmentPath);
 
     if (!fShaderFile.is_open()) {
@@ -41,7 +42,7 @@ Shader::Shader(std::string_view vertexCode, const std::filesystem::path& fragmen
     compileAndLink();
 }
 
-Shader::Shader(const std::filesystem::path& fragmentPath) 
+Shader::Shader(const std::filesystem::path& fragmentPath)
     : Shader(s_defaultVertexSource, fragmentPath) {}
 
 void Shader::compileAndLink() {
