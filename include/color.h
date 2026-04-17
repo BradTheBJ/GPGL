@@ -15,8 +15,9 @@ struct Color {
         g = green / 255.0f;
         b = blue / 255.0f;
         a = alpha / 255.0f;
+        rgba = {r, g, b, a};
     }
 
-    std::array<float, 4> rgba = {r, g, b, a};
+    std::array<float, 4> rgba;
 };
 } // namespace gpgl

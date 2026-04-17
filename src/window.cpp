@@ -1,7 +1,4 @@
 #include "window.h"
-
-// glad/glad.h and GLFW/glfw3.h are already pulled in (correct order) via
-// window.h
 #include <cstdlib>
 #include <iostream>
 
@@ -79,6 +76,8 @@ void Window::display() {
 uint Window::getWidth() const { return m_width; }
 
 uint Window::getHeight() const { return m_height; }
+
+GLFWwindow* Window::getNativeWindow() const { return m_window; }
 
 void Window::framebufferSizeCallback(GLFWwindow* window, int width,
                                      int height) {

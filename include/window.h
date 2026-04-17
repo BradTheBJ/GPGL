@@ -24,6 +24,7 @@ class Window {
 
     uint getWidth() const;
     uint getHeight() const;
+    GLFWwindow* getNativeWindow() const;
 
   private:
     uint m_width;
