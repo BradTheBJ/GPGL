@@ -2,8 +2,10 @@
 #include "shader.h"
 #include "window.h"
 #include <glad/glad.h>
+#include "texture.h"
 
 namespace gpgl {
+
 
 class Shape {
   public:
@@ -18,9 +20,12 @@ class Shape {
 
     virtual void rotate(const float& angle);
 
+    void setTexture(Texture& texture);
+
   protected:
     Window& m_window;
-    Shader m_shader{"../shaders/fragShader.glsl"};
+    Shader m_shader;
+    Texture* m_texture = nullptr;
     GLuint m_VAO = 0;
     GLuint m_VBO = 0;
     GLuint m_EBO = 0;

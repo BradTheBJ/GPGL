@@ -11,7 +11,7 @@ class Triangle : public Shape {
 
   private:
     float m_base = 0.0f, m_height = 0.0f;
-    std::array<GLfloat, 9> m_vertices;
+    std::array<GLfloat, 15> m_vertices; // 3 vertices * 5 floats (x,y,z,u,v)
 
     void updateVertices();
 };

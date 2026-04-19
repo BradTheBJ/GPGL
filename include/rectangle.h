@@ -10,7 +10,7 @@ class Rectangle : public Shape {
     void draw() override;
 
   private:
-    std::array<GLfloat, 12> m_vertices;
+    std::array<GLfloat, 20> m_vertices; // 4 vertices * 5 floats (x,y,z,u,v)
     std::array<GLuint, 6> m_indices;
     float m_width = 0.0f, m_height = 0.0f;
 
