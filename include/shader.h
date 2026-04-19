@@ -18,6 +18,12 @@ class Shader {
     Shader(std::string_view vertexCode,
            const std::filesystem::path& fragmentPath);
 
+    // Constructor using both shaders as embedded source strings (no file I/O)
+    Shader(std::string_view vertexCode, std::string_view fragmentCode);
+
+    // Default constructor — uses both embedded default shaders
+    Shader();
+
     // Constructor for fragment shader from file using default vertex shader
     Shader(const std::filesystem::path& fragmentPath);
 
@@ -42,6 +48,9 @@ class Shader {
     static constexpr std::string_view s_defaultVertexSource = R"(
 #version 330 core
 layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
+
+out vec2 TexCoord;
 
 uniform float u_x;
 uniform float u_y;
@@ -67,6 +76,26 @@ void main()
     float ndcY = 1.0 - (finalPixelPos.y / u_windowHeight) * 2.0;
     
     gl_Position = vec4(ndcX, ndcY, 0.0, 1.0);
+    TexCoord = aTexCoord;
+}
+)";
+
+    static constexpr std::string_view s_defaultFragmentSource = R"(
+#version 330 core
+out vec4 FragColor;
+
+in vec2 TexCoord;
+
+uniform sampler2D ourTexture;
+uniform int u_useTexture;
+
+void main()
+{
+    if (u_useTexture == 1) {
+        FragColor = texture(ourTexture, TexCoord);
+    } else {
+        FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    }
 }
 )";
 };

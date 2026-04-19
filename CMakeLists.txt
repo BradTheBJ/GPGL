@@ -23,7 +23,12 @@ add_library(glad glad/src/glad.c)
 target_include_directories(glad PUBLIC glad/include)
 
 # Create executable (assuming main is in src)
-add_executable(${PROJECT_NAME} ${SOURCES}
-        include/shape.h)
+add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_include_directories(${PROJECT_NAME} PRIVATE stb)
 target_link_libraries(${PROJECT_NAME} glad glfw)
+
+# Expose the project root to C++ so asset paths always resolve correctly
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    GPGL_ASSETS_DIR="${CMAKE_SOURCE_DIR}/"
+)

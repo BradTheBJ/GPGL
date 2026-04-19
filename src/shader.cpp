@@ -45,6 +45,14 @@ Shader::Shader(std::string_view vertexCode,
 Shader::Shader(const std::filesystem::path& fragmentPath)
     : Shader(s_defaultVertexSource, fragmentPath) {}
 
+Shader::Shader(std::string_view vertexCode, std::string_view fragmentCode) {
+    m_vertexCode = std::string(vertexCode);
+    m_fragmentCode = std::string(fragmentCode);
+    compileAndLink();
+}
+
+Shader::Shader() : Shader(s_defaultVertexSource, s_defaultFragmentSource) {}
+
 void Shader::compileAndLink() {
     const char* vShaderCode = m_vertexCode.c_str();
     const char* fShaderCode = m_fragmentCode.c_str();
