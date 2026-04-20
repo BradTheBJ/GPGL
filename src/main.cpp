@@ -13,16 +13,16 @@ int main() {
         window.processEvents();
         window.clear();
         if (input.isKeyDown(gpgl::Keys::A)) {
-            rect.setPosition(rect.getPositionX() + 5 , rect.getPositionY());
-        }
-        if (input.isKeyDown(gpgl::Keys::D)) {
             rect.setPosition(rect.getPositionX() - 5 , rect.getPositionY());
         }
+        if (input.isKeyDown(gpgl::Keys::D)) {
+            rect.setPosition(rect.getPositionX() + 5 , rect.getPositionY());
+        }
         if (input.isKeyDown(gpgl::Keys::W)) {
-            rect.setPosition(rect.getPositionX() , rect.getPositionY() + 5);
+            rect.setPosition(rect.getPositionX() , rect.getPositionY() - 5);
         }
         if (input.isKeyDown(gpgl::Keys::S)) {
-            rect.setPosition(rect.getPositionX(), rect.getPositionY() - 5);
+            rect.setPosition(rect.getPositionX(), rect.getPositionY() + 5);
         }
         rect.draw();
         window.display();
